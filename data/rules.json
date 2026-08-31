@@ -1,0 +1,34 @@
+{
+  "Alimentation": [
+    "carrefour", "monoprix", "leclerc", "auchan", "lidl", "aldi", "casino",
+    "intermarche", "super u", "franprix", "biocoop", "picard", "boulangerie"
+  ],
+  "Transport": [
+    "uber", "bolt", "taxi", "sncf", "ratp", "essence", "total energies",
+    "shell", "station service", "parking", "autoroute", "vinci"
+  ],
+  "Logement": [
+    "loyer", "edf", "engie", "veolia", "syndic", "assurance habitation",
+    "free mobile", "orange", "sfr", "bouygues telecom", "internet"
+  ],
+  "Loisirs": [
+    "netflix", "spotify", "cinema", "ugc", "pathe", "disney", "steam",
+    "playstation", "fnac", "concert", "theatre", "bar", "restaurant", "resto"
+  ],
+  "Sante": [
+    "pharmacie", "medecin", "docteur", "hopital", "clinique", "dentiste",
+    "mutuelle", "optique", "laboratoire"
+  ],
+  "Shopping": [
+    "amazon", "zara", "h&m", "decathlon", "ikea", "fnac", "cdiscount",
+    "vinted", "shein", "sephora"
+  ],
+  "Revenus": [
+    "salaire", "virement recu", "remboursement", "cpam", "caf", "prime",
+    "freelance", "paiement recu"
+  ],
+  "Epargne": [
+    "virement epargne", "livret a", "pea", "assurance vie"
+  ],
+  "Autres": []
+}
