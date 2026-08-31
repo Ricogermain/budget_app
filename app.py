@@ -19,10 +19,11 @@ from src.analytics import (
 )
 from src.charts import donut_depenses_categorie, bar_entrees_sorties, treemap_repartition
 from src.pdf_exporter import generate_pdf_report
+from src.icons import get_icon_svg, render_kpi_card
 
 st.set_page_config(
     page_title="Budget Dashboard",
-    page_icon="💶",
+    page_icon="assets/favicon.png",
     layout="wide",
 )
 
@@ -43,7 +44,11 @@ def reset_session():
 # SIDEBAR : Import, mapping, filtres
 # ----------------------------------------------------------------------
 with st.sidebar:
-    st.title("💶 Budget Dashboard")
+    st.markdown(
+        f'<h1 style="display:flex;align-items:center;gap:10px;font-size:1.6rem;">'
+        f'{get_icon_svg("wallet", size=26, color="#2E7D6B")} Budget Dashboard</h1>',
+        unsafe_allow_html=True,
+    )
     st.caption("Analyse locale et confidentielle de vos finances")
 
     st.divider()
@@ -100,7 +105,12 @@ with st.sidebar:
 
         mapping_ready = True
 
-        if st.button("✅ Valider et analyser", type="primary", use_container_width=True):
+        if st.button(
+            "Valider et analyser",
+            icon=":material/check_circle:",
+            type="primary",
+            use_container_width=True,
+        ):
             try:
                 normalized = normalize_dataframe(
                     raw_df,
@@ -116,7 +126,11 @@ with st.sidebar:
                 st.error(f"Erreur lors de la normalisation : {e}")
 
     st.divider()
-    st.caption("🔒 Aucune donnée n'est envoyée à un serveur externe.")
+    st.markdown(
+        f'<div style="display:flex;align-items:center;gap:6px;opacity:0.7;font-size:0.85rem;">'
+        f'{get_icon_svg("lock", size=14)} Aucune donnée n\'est envoyée à un serveur externe.</div>',
+        unsafe_allow_html=True,
+    )
 
 
 # ----------------------------------------------------------------------
@@ -126,8 +140,9 @@ st.title("Tableau de bord financier")
 
 if st.session_state.df_categorized is None:
     st.info(
-        "👈 Importez un export bancaire (ou cochez « fichier de démonstration ») "
-        "puis configurez le mapping des colonnes dans le panneau latéral."
+        "Importez un export bancaire (ou cochez « fichier de démonstration ») "
+        "puis configurez le mapping des colonnes dans le panneau latéral.",
+        icon=":material/arrow_back:",
     )
     st.stop()
 
@@ -159,15 +174,29 @@ st.divider()
 
 # --- KPI Cards ---
 kpis = compute_kpis(df)
+solde_color = "#2E7D6B" if kpis["solde_net"] >= 0 else "#D9534F"
+
 k1, k2, k3, k4 = st.columns(4)
-k1.metric("💰 Total Revenus", f"{kpis['total_revenus']:.2f} €")
-k2.metric("💸 Total Dépenses", f"{kpis['total_depenses']:.2f} €")
-k3.metric(
-    "📊 Solde Net",
-    f"{kpis['solde_net']:.2f} €",
-    delta=f"{kpis['solde_net']:.2f} €",
-)
-k4.metric("🏦 Taux d'Épargne", f"{kpis['taux_epargne']:.1f} %")
+with k1:
+    st.markdown(
+        render_kpi_card("income", "Total Revenus", f"{kpis['total_revenus']:.2f} €", "#2E7D6B"),
+        unsafe_allow_html=True,
+    )
+with k2:
+    st.markdown(
+        render_kpi_card("expense", "Total Dépenses", f"{kpis['total_depenses']:.2f} €", "#D9534F"),
+        unsafe_allow_html=True,
+    )
+with k3:
+    st.markdown(
+        render_kpi_card("balance", "Solde Net", f"{kpis['solde_net']:.2f} €", solde_color),
+        unsafe_allow_html=True,
+    )
+with k4:
+    st.markdown(
+        render_kpi_card("savings", "Taux d'Épargne", f"{kpis['taux_epargne']:.1f} %", "#C9A227"),
+        unsafe_allow_html=True,
+    )
 
 st.divider()
 
@@ -235,7 +264,8 @@ col_e1, col_e2 = st.columns(2)
 with col_e1:
     csv_bytes = df.to_csv(index=False, sep=";").encode("utf-8-sig")
     st.download_button(
-        "⬇️ Export CSV enrichi",
+        "Export CSV enrichi",
+        icon=":material/download:",
         data=csv_bytes,
         file_name="transactions_categorisees.csv",
         mime="text/csv",
@@ -247,7 +277,8 @@ with col_e2:
     df_cat_pdf = depenses_par_categorie(df)
     pdf_bytes = generate_pdf_report(kpis, df_cat_pdf, df_top)
     st.download_button(
-        "⬇️ Synthèse PDF professionnelle",
+        "Synthèse PDF professionnelle",
+        icon=":material/picture_as_pdf:",
         data=pdf_bytes,
         file_name="synthese_budget.pdf",
         mime="application/pdf",

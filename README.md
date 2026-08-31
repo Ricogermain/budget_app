@@ -1,4 +1,4 @@
-# 💶 Budget Dashboard — Analyse Financière Personnelle
+# Budget Dashboard — Analyse Financière Personnelle
 
 Dashboard web interactif pour analyser vos exports bancaires (CSV/Excel)
 en quelques secondes. Traitement **100% local**, aucune donnée envoyée
