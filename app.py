@@ -20,6 +20,7 @@ from src.analytics import (
 from src.charts import donut_depenses_categorie, bar_entrees_sorties, treemap_repartition
 from src.pdf_exporter import generate_pdf_report
 from src.icons import get_icon_svg, render_kpi_card
+from src.currency import format_ariary
 
 st.set_page_config(
     page_title="Budget Dashboard",
@@ -179,17 +180,17 @@ solde_color = "#2E7D6B" if kpis["solde_net"] >= 0 else "#D9534F"
 k1, k2, k3, k4 = st.columns(4)
 with k1:
     st.markdown(
-        render_kpi_card("income", "Total Revenus", f"{kpis['total_revenus']:.2f} €", "#2E7D6B"),
+        render_kpi_card("income", "Total Revenus", format_ariary(kpis["total_revenus"]), "#2E7D6B"),
         unsafe_allow_html=True,
     )
 with k2:
     st.markdown(
-        render_kpi_card("expense", "Total Dépenses", f"{kpis['total_depenses']:.2f} €", "#D9534F"),
+        render_kpi_card("expense", "Total Dépenses", format_ariary(kpis["total_depenses"]), "#D9534F"),
         unsafe_allow_html=True,
     )
 with k3:
     st.markdown(
-        render_kpi_card("balance", "Solde Net", f"{kpis['solde_net']:.2f} €", solde_color),
+        render_kpi_card("balance", "Solde Net", format_ariary(kpis["solde_net"]), solde_color),
         unsafe_allow_html=True,
     )
 with k4:
@@ -234,7 +235,7 @@ edited_df = st.data_editor(
     column_config={
         "date": st.column_config.DateColumn("Date", format="DD/MM/YYYY"),
         "libelle": st.column_config.TextColumn("Libellé", disabled=True),
-        "montant": st.column_config.NumberColumn("Montant (€)", format="%.2f €", disabled=True),
+        "montant": st.column_config.NumberColumn("Montant (Ar)", format="%.0f Ar", disabled=True),
         "categorie": st.column_config.SelectboxColumn("Catégorie", options=categories_options),
     },
     hide_index=True,

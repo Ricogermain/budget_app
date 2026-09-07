@@ -131,9 +131,10 @@ def _parse_dates(series: pd.Series) -> pd.Series:
 
 
 def _to_numeric(series: pd.Series) -> pd.Series:
-    """Nettoie une colonne de montants (espaces, virgules décimales, symbole €)."""
+    """Nettoie une colonne de montants (espaces, virgules décimales, symboles Ar/€)."""
     cleaned = (
         series.astype(str)
+        .str.replace("Ar", "", regex=False)
         .str.replace("€", "", regex=False)
         .str.replace(" ", "", regex=False)
         .str.replace("\u202f", "", regex=False)
