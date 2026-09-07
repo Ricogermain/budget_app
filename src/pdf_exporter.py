@@ -8,6 +8,8 @@ répartition budgétaire par catégorie.
 from datetime import datetime
 from fpdf import FPDF
 
+from src.currency import format_ariary
+
 
 class BudgetReportPDF(FPDF):
     def header(self):
@@ -53,9 +55,9 @@ def generate_pdf_report(kpis: dict, df_categorie, df_top_depenses) -> bytes:
 
     pdf.set_font("Helvetica", "", 11)
     kpi_lines = [
-        ("Total Revenus", f"{kpis['total_revenus']:.2f} EUR"),
-        ("Total Depenses", f"{kpis['total_depenses']:.2f} EUR"),
-        ("Solde Net", f"{kpis['solde_net']:.2f} EUR"),
+        ("Total Revenus", format_ariary(kpis["total_revenus"])),
+        ("Total Depenses", format_ariary(kpis["total_depenses"])),
+        ("Solde Net", format_ariary(kpis["solde_net"])),
         ("Taux d'Epargne", f"{kpis['taux_epargne']:.1f} %"),
     ]
     for label, value in kpi_lines:
@@ -71,12 +73,12 @@ def generate_pdf_report(kpis: dict, df_categorie, df_top_depenses) -> bytes:
     pdf.set_font("Helvetica", "B", 10)
     pdf.set_fill_color(244, 246, 245)
     pdf.cell(100, 8, "Categorie", border=1, fill=True)
-    pdf.cell(60, 8, "Montant (EUR)", border=1, fill=True, ln=True)
+    pdf.cell(60, 8, "Montant (Ar)", border=1, fill=True, ln=True)
 
     pdf.set_font("Helvetica", "", 10)
     for _, row in df_categorie.iterrows():
         pdf.cell(100, 7, _clean(row["categorie"]), border=1)
-        pdf.cell(60, 7, f"{row['montant']:.2f}", border=1, ln=True)
+        pdf.cell(60, 7, _clean(format_ariary(row["montant"])), border=1, ln=True)
 
     pdf.ln(6)
 
@@ -86,17 +88,17 @@ def generate_pdf_report(kpis: dict, df_categorie, df_top_depenses) -> bytes:
 
     pdf.set_font("Helvetica", "B", 9)
     pdf.set_fill_color(244, 246, 245)
-    pdf.cell(30, 8, "Date", border=1, fill=True)
-    pdf.cell(80, 8, "Libelle", border=1, fill=True)
-    pdf.cell(40, 8, "Categorie", border=1, fill=True)
-    pdf.cell(30, 8, "Montant", border=1, fill=True, ln=True)
+    pdf.cell(25, 8, "Date", border=1, fill=True)
+    pdf.cell(75, 8, "Libelle", border=1, fill=True)
+    pdf.cell(35, 8, "Categorie", border=1, fill=True)
+    pdf.cell(45, 8, "Montant", border=1, fill=True, ln=True)
 
     pdf.set_font("Helvetica", "", 9)
     for _, row in df_top_depenses.iterrows():
         date_str = row["date"].strftime("%d/%m/%Y") if hasattr(row["date"], "strftime") else str(row["date"])
-        pdf.cell(30, 7, _clean(date_str), border=1)
-        pdf.cell(80, 7, _clean(str(row["libelle"])[:38]), border=1)
-        pdf.cell(40, 7, _clean(row["categorie"]), border=1)
-        pdf.cell(30, 7, f"{row['montant_abs']:.2f} EUR", border=1, ln=True)
+        pdf.cell(25, 7, _clean(date_str), border=1)
+        pdf.cell(75, 7, _clean(str(row["libelle"])[:36]), border=1)
+        pdf.cell(35, 7, _clean(row["categorie"]), border=1)
+        pdf.cell(45, 7, _clean(format_ariary(row["montant_abs"])), border=1, ln=True)
 
     return bytes(pdf.output())

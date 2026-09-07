@@ -1,34 +1,40 @@
 {
   "Alimentation": [
-    "carrefour", "monoprix", "leclerc", "auchan", "lidl", "aldi", "casino",
-    "intermarche", "super u", "franprix", "biocoop", "picard", "boulangerie"
+    "jumbo score", "shoprite", "leader price", "score", "supermaki",
+    "kobiroto", "champion price", "epicerie", "marche", "hyper u",
+    "boulangerie", "kang store"
   ],
   "Transport": [
-    "uber", "bolt", "taxi", "sncf", "ratp", "essence", "total energies",
-    "shell", "station service", "parking", "autoroute", "vinci"
+    "taxi-be", "taxi be", "bajaj", "bus urbain", "carburant",
+    "station essence", "galana", "jovena", "vivo energy", "parking",
+    "bolt", "e-taxi"
   ],
   "Logement": [
-    "loyer", "edf", "engie", "veolia", "syndic", "assurance habitation",
-    "free mobile", "orange", "sfr", "bouygues telecom", "internet"
+    "jirama", "loyer", "syndic", "eau et electricite", "electricite",
+    "internet", "wifi"
+  ],
+  "Telecommunications": [
+    "telma", "orange madagascar", "airtel madagascar", "yas",
+    "mvola", "orange money", "airtel money", "recharge credit"
   ],
   "Loisirs": [
-    "netflix", "spotify", "cinema", "ugc", "pathe", "disney", "steam",
-    "playstation", "fnac", "concert", "theatre", "bar", "restaurant", "resto"
+    "canal+", "netflix", "cinema", "restaurant", "hotely", "gargote",
+    "cafe", "bar", "salon de the", "glacier"
   ],
   "Sante": [
-    "pharmacie", "medecin", "docteur", "hopital", "clinique", "dentiste",
-    "mutuelle", "optique", "laboratoire"
+    "pharmacie", "clinique", "medecin", "docteur", "hopital",
+    "laboratoire", "cenhosoa", "hjra"
   ],
   "Shopping": [
-    "amazon", "zara", "h&m", "decathlon", "ikea", "fnac", "cdiscount",
-    "vinted", "shein", "sephora"
+    "vetement", "lalao", "quincaillerie", "materiaux"
   ],
   "Revenus": [
-    "salaire", "virement recu", "remboursement", "cpam", "caf", "prime",
-    "freelance", "paiement recu"
+    "salaire", "vir salaire", "virement recu", "remboursement",
+    "prime", "freelance", "paiement recu", "mvola recu", "airtel money recu"
   ],
   "Epargne": [
-    "virement epargne", "livret a", "pea", "assurance vie"
+    "virement epargne", "bni epargne", "bfv epargne", "mcb epargne",
+    "compte epargne"
   ],
   "Autres": []
 }

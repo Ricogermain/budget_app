@@ -5,11 +5,13 @@ Génération des graphiques interactifs (Plotly Express).
 import plotly.express as px
 import pandas as pd
 
+from src.currency import format_ariary
+
 COLOR_SEQUENCE = px.colors.qualitative.Set2
 
 
 def donut_depenses_categorie(df_categorie: pd.DataFrame):
-    """Donut Chart : répartition des dépenses par poste (% et €)."""
+    """Donut Chart : répartition des dépenses par poste (% et Ar)."""
     fig = px.pie(
         df_categorie,
         names="categorie",
@@ -20,7 +22,8 @@ def donut_depenses_categorie(df_categorie: pd.DataFrame):
     fig.update_traces(
         textposition="outside",
         texttemplate="%{label}<br>%{percent}",
-        hovertemplate="%{label}<br>%{value:.2f} €<extra></extra>",
+        customdata=df_categorie["montant"].apply(format_ariary),
+        hovertemplate="%{label}<br>%{customdata}<extra></extra>",
     )
     fig.update_layout(
         showlegend=True,
@@ -49,7 +52,7 @@ def bar_entrees_sorties(df_mensuel: pd.DataFrame):
         color="type",
         barmode="group",
         color_discrete_map={"Entrées": "#2E7D6B", "Sorties": "#D9534F"},
-        labels={"mois": "Mois", "montant": "Montant (€)", "type": ""},
+        labels={"mois": "Mois", "montant": "Montant (Ar)", "type": ""},
     )
     fig.update_layout(margin=dict(t=30, b=10, l=10, r=10), legend_title_text="")
     return fig
@@ -65,8 +68,8 @@ def treemap_repartition(df_hierarchique: pd.DataFrame):
         color_discrete_sequence=COLOR_SEQUENCE,
     )
     fig.update_traces(
-        texttemplate="%{label}<br>%{value:.2f} €",
-        hovertemplate="%{label}<br>%{value:.2f} €<extra></extra>",
+        texttemplate="%{label}<br>%{value:,.0f} Ar",
+        hovertemplate="%{label}<br>%{value:,.0f} Ar<extra></extra>",
     )
     fig.update_layout(margin=dict(t=30, b=10, l=10, r=10))
     return fig
