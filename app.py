@@ -121,6 +121,12 @@ with st.sidebar:
                     debit_col=debit_col,
                     credit_col=credit_col,
                 )
+                dropped = len(raw_df) - len(normalized)
+                if dropped > 0:
+                    st.warning(
+                        f"{dropped} ligne(s) ignorée(s) : date ou montant illisible. "
+                        "Vérifiez le mapping si ce nombre vous semble élevé."
+                    )
                 st.session_state.df_categorized = categorize_dataframe(normalized, RULES)
                 st.success(f"{len(normalized)} transactions importées.")
             except Exception as e:
@@ -148,6 +154,15 @@ if st.session_state.df_categorized is None:
     st.stop()
 
 df = st.session_state.df_categorized.copy()
+
+if df.empty or df["date"].isna().all():
+    st.error(
+        "Aucune transaction exploitable dans les données importées. "
+        "Réimportez le fichier en vérifiant le mapping des colonnes "
+        "(Date et Format des montants)."
+    )
+    st.session_state.df_categorized = None
+    st.stop()
 
 # --- Filtres temporels et catégoriels ---
 col_f1, col_f2 = st.columns([2, 3])

@@ -109,7 +109,34 @@ def normalize_dataframe(
             "soit 'debit_col' + 'credit_col'."
         )
 
+    total_rows = len(result)
+    valid_dates = result["date"].notna().sum()
+    valid_montants = result["montant"].notna().sum()
+
     result = result.dropna(subset=["date", "montant"]).reset_index(drop=True)
+
+    if result.empty:
+        # Diagnostic précis pour aider l'utilisateur à corriger le mapping
+        if total_rows == 0:
+            raise ValueError("Le fichier importé ne contient aucune ligne de données.")
+        if valid_dates == 0:
+            raise ValueError(
+                f"Impossible d'interpréter la colonne Date ('{date_col}'). "
+                "Vérifiez qu'elle contient bien des dates (ex: 2026-08-01 ou 01/08/2026)."
+            )
+        if valid_montants == 0:
+            source = amount_col or f"{debit_col} / {credit_col}"
+            raise ValueError(
+                f"Impossible d'interpréter les montants de la colonne '{source}'. "
+                "Vérifiez le format sélectionné (colonne unique +/- ou Débit/Crédit "
+                "séparés) et que les valeurs sont bien numériques."
+            )
+        raise ValueError(
+            "Aucune ligne valide après normalisation : la colonne Date et la "
+            "colonne Montant ne sont jamais renseignées en même temps sur la "
+            "même ligne. Vérifiez le mapping des colonnes."
+        )
+
     return result
 
 
